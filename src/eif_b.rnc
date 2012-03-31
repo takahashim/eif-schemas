@@ -1,0 +1,171 @@
+#  Schema for bibliography file in E-book Interchange Format V1.1
+#
+#  by Masayoshi Takahashi (@takahashim)
+
+default namespace = "http://ebformat.jp"
+
+datatype.URI = xsd:anyURI
+
+datatype.title_type = ('title'|'series'|'subtitle'|'other')
+datatype.creator_role = ('designer'|'author'|'editor'|'translator'|'supervisor'|'photographer'|'illustrator'|'binder'|'planner'|'other')
+datatype.ISO3166 = xsd:string { pattern = "[a-z]{3}" }
+datatype.publisher_code_type = text
+datatype.contributor_role = text
+datatype.date_type = ('publication'|'sale'|'revision')
+datatype.date_system = text
+datatype.identifier_type = ('ISBN')
+datatype.attribute_system = text
+datatype.ISO4217 = xsd:string { pattern = "[A-Z]{3}" }
+datatype.name_type = ( 'first'|'middle'|'last'|'place'|'other' )
+datatype.reading = text
+datatype.classification_type = text
+datatype.rating_type = ('adult'|'violent')
+datatype.keyword_type = text
+datatype.image_type = ('spine'|'front'|'thumbnail'|'other')
+
+start = eif_b.bibliography
+
+eif_b.bibliography = element bibliography { eif_b.bibliography.content }
+eif_b.bibliography.content = eif_b.title+ & eif_b.edition &
+    eif_b.creator* & eif_b.subject & eif_b.description & eif_b.publisher & eif_b.distributor &
+    eif_b.contributor & eif_b.date & eif_b.identifier & eif_b.source & eif_b.language &
+    eif_b.relation & eif_b.coverage & eif_b.rights & eif_b.price &
+    eif_b.classification & eif_b.rating & eif_b.synopsis & eif_b.keyword &
+    eif_b.image
+eif_b.title = element title { eif_b.title.attrlist? & eif_b.title.content }
+eif_b.title.attrlist = eif_b.title.reading? & eif_b.title.type?
+eif_b.title.reading = attribute reading { datatype.reading }
+eif_b.title.type = attribute type { datatype.title_type }
+eif_b.title.content = text
+
+eif_b.edition = element edition { eif_b.edition.attrlist & eif_b.edition.content }
+eif_b.edition.attrlist = eif_b.edition.reading?
+eif_b.edition.reading = attribute reading { datatype.reading }
+eif_b.edition.content = text
+
+eif_b.creator = element creator { eif_b.creator.attrlist & eif_b.creator.content }
+eif_b.creator.attrlist = eif_b.creator.role?
+eif_b.creator.role = attribute role { datatype.creator_role }
+eif_b.creator.content = eif_b.organization & eif_b.person & eif_b.comment
+
+eif_b.subject = element subject { eif_b.subject.content }
+eif_b.subject.content = text
+
+eif_b.description = element discription { eif_b.description.content }
+eif_b.description.content = text
+
+eif_b.publisher = element publisher { eif_b.publisher.attrlist & eif_b.publisher.content }
+eif_b.publisher.attrlist = eif_b.publisher.country?
+eif_b.publisher.country = attribute country { datatype.ISO3166 }
+eif_b.publisher.content = eif_b.publisher_class
+eif_b.publisher_class = eif_b.organization? & eif_b.person? & eif_b.comment? & eif_b.code?
+
+eif_b.code = element code { eif_b.code.attrlist & eif_b.code.content }
+eif_b.code.attrlist = eif_b.code.type?
+eif_b.code.type = attribute type { datatype.publisher_code_type }
+eif_b.code.content = text
+
+eif_b.distributor = element distributor { eif_b.distributor.content }
+eif_b.distributor.content = eif_b.publisher_class
+
+eif_b.contributor = element contributor { eif_b.contributor.attrlist & eif_b.contributor.content }
+eif_b.contributor.attrlist = eif_b.contributor.role?
+eif_b.contributor.role = attribute role { datatype.contributor_role }
+eif_b.contributor.content = eif_b.publisher_class
+
+eif_b.date = element date { eif_b.date.attrlist & eif_b.date.content }
+eif_b.date.attrlist = eif_b.date.type? & eif_b.date.system?
+eif_b.date.type = attribute type { datatype.date_type }
+eif_b.date.system = attribute system { datatype.date_system }
+eif_b.date.content = text
+
+eif_b.identifier = element identifier { eif_b.identifier.attrlist & eif_b.identifier.content }
+eif_b.identifier.attrlist = eif_b.identifier.type
+eif_b.identifier.type = attribute type { datatype.identifier_type }
+eif_b.identifier.content = text
+
+eif_b.source = element source { eif_b.source.content }
+eif_b.source.content = text
+
+eif_b.language = element language { eif_b.language.attrlist }
+eif_b.language.attrlist = eif_b.language.system?
+eif_b.language.system = attribute system { datatype.attribute_system }
+eif_b.language.content = text
+
+eif_b.relation = element relation { eif_b.relation.content }
+eif_b.relation.content = text
+
+eif_b.coverage = element coverage { eif_b.coverage.content }
+eif_b.coverage.content = text
+
+eif_b.rights = element rights { eif_b.rights.content }
+eif_b.rights.content = text
+
+eif_b.price = element price { eif_b.price.attrlist & eif_b.price.content }
+eif_b.price.attrlist = eif_b.price.currency & eif_b.price.country?
+eif_b.price.currency = attribute currency { datatype.ISO4217 }
+eif_b.price.country = attribute country { datatype.ISO3166 }
+eif_b.price.content = text
+
+eif_b.person = element person { eif_b.person.content }
+eif_b.person.content = eif_b.organization_class
+
+eif_b.organization = element organization { eif_b.organization.content }
+eif_b.organization.content = eif_b.organization_class
+eif_b.organization_class = eif_b.name* & eif_b.contact? & eif_b.comment?
+
+eif_b.name = element name { eif_b.name.attrlist & eif_b.name.content }
+eif_b.name.attrlist = eif_b.name.type? & eif_b.name.reading
+eif_b.name.type = attribute type { datatype.name_type }
+eif_b.name.reading = attribute reading { datatype.reading }
+eif_b.name.content = text
+
+eif_b.contact = element contact { eif_b.contact.content }
+eif_b.contact.content =  eif_b.address* & eif_b.email* & eif_b.telephone* & eif_b.fax* & eif_b.website*
+
+eif_b.address = element address { eif_b.address.attrlist & eif_b.address.content }
+eif_b.address.attrlist = eif_b.address.reading?
+eif_b.address.reading = attribute reading { datatype.reading }
+eif_b.address.content = eif_b.postcode? & text
+
+eif_b.postcode = element postcode { eif_b.postcode.content }
+eif_b.postcode.content = text
+
+eif_b.email = element email { eif_b.email.content }
+eif_b.email.content = text
+
+eif_b.telephone = element telephone { eif_b.telephone.content }
+eif_b.telephone.content = text
+
+eif_b.fax = element fax { eif_b.fax.content }
+eif_b.fax.content = text
+
+eif_b.website = element website { eif_b.website.content }
+eif_b.website.content = text
+
+eif_b.comment = element comment { eif_b.comment.content }
+eif_b.comment.content = text
+
+eif_b.classification = element classification { eif_b.classification.attrlist & eif_b.classification.content }
+eif_b.classification.attrlist = eif_b.classification.type
+eif_b.classification.type = attribute type { datatype.classification_type }
+eif_b.classification.content = text
+
+eif_b.rating = element rating { eif_b.rating.attrlist & eif_b.rating.content }
+eif_b.rating.attrlist = eif_b.rating.type?
+eif_b.rating.type = attribute type { datatype.rating_type }
+eif_b.rating.content = text
+
+eif_b.synopsis = element synopsis { eif_b.synopsis.content }
+eif_b.synopsis.content = text
+
+eif_b.keyword = element keyword { eif_b.keyword.attrlist & eif_b.keyword.content }
+eif_b.keyword.attrlist = eif_b.keyword.type? & eif_b.keyword.reading?
+eif_b.keyword.type = attribute type { datatype.keyword_type }
+eif_b.keyword.reading = attribute reading { datatype.reading }
+eif_b.keyword.content = text
+
+eif_b.image = element image { eif_b.image.attrlist & eif_b.image.content }
+eif_b.image.attrlist = eif_b.image.type?
+eif_b.image.type = attribute type { datatype.image_type }
+eif_b.image.content = datatype.URI
