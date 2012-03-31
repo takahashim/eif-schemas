@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<global_setting xmlns="http://ebformat.jp">
+  <default_ccs>JIS X 0208:1997,JIS X 0213</default_ccs>
+  <page_progression_direction>ltr</page_progression_direction>
+  <window width="1024" height="768" />
+  <proprietary vendor="ttime">
+    test.
+  </proprietary>
+</global_setting>

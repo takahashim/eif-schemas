@@ -1,0 +1,29 @@
+#  Schema for Global setting in E-book Interchange Format V1.1
+#
+#  by Masayoshi Takahashi (@takahashim)
+
+default namespace = "http://ebformat.jp"
+
+datatype.integer = xsd:integer
+datatype.vendor_name = text
+datatype.charsets = text
+datatype.page_direction = ('rl'|'rtl'|'lr'|'ltr')
+
+start = eif_g.global_setting
+
+eif_g.global_setting = element global_setting { eif_g.global_setting.content }
+eif_g.global_setting.content = eif_g.default_ccs & eif_g.page_progression_direction & eif_g.window & eif_g.proprietary
+
+eif_g.default_ccs = element default_ccs { datatype.charsets }
+
+eif_g.page_progression_direction = element page_progression_direction { datatype.page_direction }
+
+eif_g.window = element window { eif_g.window.attrlist }
+eif_g.window.attrlist = eif_g.window.width? & eif_g.window.height?
+eif_g.window.width = attribute width { datatype.integer }
+eif_g.window.height = attribute height { datatype.integer }
+
+eif_g.proprietary = element proprietary { eif_g.proprietary.vendor & eif_g.proprietary.content }
+eif_g.proprietary.vendor = attribute vendor { datatype.vendor_name }
+eif_g.proprietary.content = text
+

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package version="1.1" xmlns="http://ebformat.jp">
+  <manifest>
+    <item id="cover0" href="eif/cover.xml" media-type="application/xml" />
+    <item id="text0" href="eif/text0.xml" media-type="application/xml" />
+    <item id="text1" href="eif/text1.xml" media-type="application/xml" />
+    <item id="text2" href="eif/text2.xml" media-type="application/xml" />
+    <item id="global" href="eif/ch03.xml" media-type="application/xml" />
+    <item id="biblio" href="eif/biblio.xml" media-type="application/xml" />
+    <item id="style0" href="eif/style0.css" media-type="text/css" />
+    <item id="style1" href="eif/style1.css" media-type="text/css" />
+    <item id="image0" href="eif/image/image0.jpg" media-type="image/jpeg">
+      <permission type="download" value="no" />
+      <permission type="export" value="no" />
+    </item>
+    <item id="image1" href="eif/image/image1.jpg" media-type="image/jpeg" />
+    <item id="my_gothic" href="eif/font/my_gothic.ttf" media-type="font/truetype" />
+  </manifest>
+  <spine>
+    <itemref idref="text0" />
+    <itemref idref="text1" />
+    <itemref idref="text2" />
+  </spine>
+  <special_page_link>
+    <special_page type="cover" title="表紙">cover</special_page>
+    <special_page type="body" title="本文">text0</special_page>
+    <special_page type="bibliography" title="参考文献">biblio</special_page>
+  </special_page_link>
+</package>
+
+

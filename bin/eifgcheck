@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+jar = File.join(File.dirname(__FILE__), '/../lib/jing.jar')
+system 'java', '-jar', jar, '-c', ARGV[0], ARGV[1]

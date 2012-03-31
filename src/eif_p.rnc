@@ -1,0 +1,60 @@
+#  Schema for package file in E-book Interchange Format V1.1
+#
+#  by Masayoshi Takahashi (@takahashim)
+
+default namespace = "http://ebformat.jp"
+
+datatype.integer = xsd:integer
+datatype.version = text
+datatype.mimetype = xsd:string { pattern='[a-zA-Z0-9!#$&+\-\^_]+/[a-zA-Z0-9!#$&+\-\^_]+.*' }
+datatype.URI = xsd:anyURI
+datatype.ID = xsd:NCName
+datatype.permission_type = ('print'|'copy'|'reading'|'export'|'download'|'irda'|'reading_on_ppc'|'conv_to_palm')
+datatype.permission_value = ('authorized'|'in_device_only'|'no')
+datatype.page_type = ('cover'|'title_page'|'preface'|'contents'|'body'|'column'|'note'|'figure'|'ad'|'afterword'|'appendix'|'answer'|'glossary'|'bibliography'|'commentary'|'index'|'imprint'|'author_info'|'other'|'flow_title')
+
+start = eif_p.package
+
+eif_p.package = element package { eif_p.package.attrlist & eif_p.package.content }
+eif_p.package.attrlist = eif_p.package.version?
+eif_p.package.version = attribute version { datatype.version }
+eif_p.package.content = eif_p.manifest, eif_p.spine, eif_p.special_page_link?
+
+eif_p.manifest = element manifest { eif_p.manifest.attrlist & eif_p.manifest.content }
+eif_p.manifest.attrlist = eif_p.manifest.version?
+eif_p.manifest.version = attribute version { datatype.version }
+eif_p.manifest.content = eif_p.item+
+
+eif_p.item = element item { eif_p.item.attrlist & eif_p.item.content }
+eif_p.item.attrlist = eif_p.item.id & eif_p.item.href &  eif_p.item.media-type
+eif_p.item.id = attribute id { datatype.ID }
+eif_p.item.href = attribute href { datatype.URI }
+eif_p.item.media-type = attribute media-type { datatype.mimetype }
+eif_p.item.content = eif_p.permission*
+
+eif_p.permission = element permission { eif_p.permission.attrlist & eif_p.permission.content }
+eif_p.permission.attrlist = eif_p.permission.type & eif_p.permission.value?
+eif_p.permission.type = attribute type { datatype.permission_type }
+eif_p.permission.value = attribute value { datatype.permission_value }
+eif_p.permission.content = empty
+
+eif_p.spine = element spine { eif_p.spine.attrlist & eif_p.spine.content }
+eif_p.spine.attrlist = eif_p.spine.toc? & eif_p.spine.global_setting? & eif_p.spine.search_table? & eif_p.spine.bibliography?
+eif_p.spine.toc = attribute toc { datatype.ID }
+eif_p.spine.global_setting = attribute global_setting { datatype.ID }
+eif_p.spine.search_table = attribute search_table { datatype.ID }
+eif_p.spine.bibliography = attribute bibliography { datatype.ID }
+eif_p.spine.content = eif_p.itemref+
+
+eif_p.itemref = element itemref { eif_p.itemref.attrlist & eif_p.itemref.content }
+eif_p.itemref.attrlist = eif_p.itemref.idref
+eif_p.itemref.idref = attribute idref { datatype.ID }
+eif_p.itemref.content = empty
+
+eif_p.special_page_link = element special_page_link { eif_p.special_page* }
+
+eif_p.special_page = element special_page { eif_p.special_page.attrlist & eif_p.special_page.content }
+eif_p.special_page.attrlist = eif_p.special_page.type? & eif_p.special_page.title
+eif_p.special_page.type = attribute type { datatype.page_type }
+eif_p.special_page.title = attribute title { text }
+eif_p.special_page.content = datatype.ID
