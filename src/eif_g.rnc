@@ -25,5 +25,4 @@ eif_g.window.height = attribute height { datatype.integer }
 
 eif_g.proprietary = element proprietary { eif_g.proprietary.vendor & eif_g.proprietary.content }
 eif_g.proprietary.vendor = attribute vendor { datatype.vendor_name }
-eif_g.proprietary.content = text
-
+eif_g.proprietary.content = element * { string }
